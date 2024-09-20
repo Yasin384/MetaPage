@@ -5,6 +5,7 @@ urlpatterns = [
     # ...
     path('api/attendance/', views.AttendanceView.as_view()),
     path('api/points/', views.PointsView.as_view()),
+    path('check_attendance/', views.check_attendance, name='check_attendance'),
 
     # ...
     path('courses/', views.course_list, name='course_list'),

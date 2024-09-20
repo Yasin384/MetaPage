@@ -4,26 +4,39 @@
 
 <script>
     function checkAttendance() {
-    $.ajax({
-        url: '{% url 'check_attendance' %}',
-        type: 'POST',
-        data: JSON.stringify({
-            latitude: 42.85756076410975,
-            longitude: 74.59857798966878
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-            if (data.status === 'success') {
-                alert("Посещаемость отмечена!");
-            } else {
-                alert("Ошибка: " + data.message);
-            }
-        },
-        error: function () {
-            alert("Произошла ошибка при отправке запроса.");
-        }
-    });
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            $.ajax({
+               
+                url: "{% url 'student_management:check_attendance' %}",
+
+                type: 'POST',
+                data: JSON.stringify({
+                    latitude: latitude,
+                    longitude: longitude
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (data.status === 'success') {
+                        alert("Посещаемость отмечена!");
+                    } else {
+                        alert("Ошибка: " + data.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Произошла ошибка при отправке запроса: " + errorThrown);
+                }
+            });
+        }, function (error) {
+            alert("Произошла ошибка при получении местоположения: " + error.message);
+        });
+    } else {
+        alert("Ваш браузер не поддерживает определение местоположения.");
+    }
 }
 </script><h1>Добро пожаловать, {{ user.username }}!</h1>
 <button onclick="checkAttendance()">Проверить посещаемость</button>
@@ -37,4 +50,5 @@
     <input type="date" name="end_date" id="end_date">
     <button type="submit">Скачать отчет</button>
 </form>
+
 
