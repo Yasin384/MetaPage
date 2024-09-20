@@ -23,7 +23,7 @@ SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 SECURE_SSL_REDIRECT = False
 ALLOWED_HOSTS = [
     'web-production-18ad8.up.railway.app',
@@ -50,6 +50,7 @@ CELERY_BEAT_SCHEDULE = {
 }
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 # Security settings
+LOGIN_URL = '/login/'  # Adjust this based on your login URL
 
 
 INSTALLED_APPS = [
@@ -60,6 +61,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
      'student_management',
+     'rest_framework',
+     'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +73,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware'
 ]
 
 ROOT_URLCONF = 'student_management_project.urls'
