@@ -1,2 +1,3 @@
-web: gunicorn MetaPage.wsgi
+web: gunicorn student_management_project.wsgi
+
 
