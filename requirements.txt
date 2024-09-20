@@ -9,9 +9,12 @@ click-repl==0.3.0
 colorama==0.4.6
 Django==5.0.9
 django-celery-results==2.5.1
+django-extensions==3.2.3
+djangorestframework==3.15.2
 et-xmlfile==1.1.0
 geographiclib==2.0
 geopy==2.4.1
+gunicorn==20.1.0
 kombu==5.4.2
 openpyxl==3.1.5
 prompt_toolkit==3.0.47
@@ -23,4 +26,3 @@ sqlparse==0.5.1
 tzdata==2024.1
 vine==5.1.0
 wcwidth==0.2.13
-gunicorn
