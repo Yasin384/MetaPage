@@ -1,0 +1,12 @@
+<h1>Список курсов</h1>
+
+<form method="get">
+  <input type="text" name="q" placeholder="Поиск курсов...">
+  <button type="submit">Найти</button>
+</form>
+
+<ul>
+{% for course in courses %}
+    <li><a href="{% url 'course_detail' course.id %}">{{ course.name }}</a></li>
+{% endfor %}
+</ul>

@@ -1,0 +1,15 @@
+<h1>{{ course.name }}</h1>
+<p>Преподаватель: {{ course.teacher.username }}</p>
+<p>Количество студентов: {{ course.students.count }}</p>
+
+{% if is_enrolled %}
+    <form action="{% url 'unenroll_course' course.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Отписаться от курса</button>
+    </form>
+{% else %}
+    <form action="{% url 'enroll_course' course.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Записаться на курс</button>
+    </form>
+{% endif %}
