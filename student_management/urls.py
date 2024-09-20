@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+app_name = 'student_management'
 urlpatterns = [
     # ...
     path('api/attendance/', views.AttendanceView.as_view()),
