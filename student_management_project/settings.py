@@ -7,6 +7,12 @@ import dj_database_url
 
 # Определите базовый путь вашего проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    "/var/www/static/",
+]
 
 # Логгирование
 LOGGING = {
