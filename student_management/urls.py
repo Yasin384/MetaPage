@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'student_management'
@@ -12,8 +12,8 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('courses/', views.course_list, name='course_list'),
     path('courses/<int:course_id>/', views.course_detail, name='course_detail'),
-    path('courses/<int:course_id>/enroll/', views.enroll_course, name='enroll_course'),
-    path('courses/<int:course_id>/unenroll/', views.unenroll_course, name='unenroll_course'),
+    path('courses/<int:course_id>/enroll/', views.enroll_course, name='course_enroll'),
+    path('courses/<int:course_id>/unenroll/', views.unenroll_course, name='course_unenroll'),
     path('teachers/profile/', views.teacher_profile, name='teacher_profile'),
     path('teachers/create_course/', views.create_course, name='create_course'),
     path('teachers/course/<int:course_id>/edit/', views.edit_course, name='edit_course'),

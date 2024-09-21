@@ -12,6 +12,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = '/static/'  # Make sure this is correctly defined
 STATICFILES_DIRS = [BASE_DIR / "static"]  # Directory for static files in development
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Directory for collected static files
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'django.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-dev-secret-key')
@@ -135,8 +153,9 @@ CSRF_TRUSTED_ORIGINS = [
 
 # Security settings (configure for production later)
 SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
