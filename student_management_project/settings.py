@@ -9,9 +9,9 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_URL = '/static/'  # Make sure this is correctly defined
+STATICFILES_DIRS = [BASE_DIR / "static"]  # Directory for static files in development
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Directory for collected static files
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-dev-secret-key')
@@ -47,12 +47,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     'whitenoise.middleware.WhiteNoiseMiddleware', 
 ]
-STATIC_URL = '/static/'
 
 # Add Whitenoise static file handling
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 ROOT_URLCONF = 'student_management_project.urls'
 
 TEMPLATES = [
@@ -88,7 +87,7 @@ else:
         }
     }
 
-# Celery Configuration (make sure RabbitMQ or Redis is properly configured)
+# Celery Configuration
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'amqp://guest:guest@localhost:5672//')
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_BEAT_SCHEDULE = {
@@ -134,22 +133,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://web-production-e8c3.up.railway.app'
 ]
 
-# Static Files Storage for Production (using WhiteNoise)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Extra settings for secure production (to be configured later)
+# Security settings (configure for production later)
 SECURE_SSL_REDIRECT = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 
-# Ensure this is off in production
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
-
-
-
-
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
