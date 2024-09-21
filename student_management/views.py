@@ -139,7 +139,7 @@ def student_profile(request):
     student = Student.objects.get(user=request.user)
     courses = student.user.enrolled_courses.all()
     attendance = Attendance.objects.filter(user=request.user).order_by('-date')[:5]
-    return render(request, 'students/student_profile.html', {'student': student, 'courses': courses, 'attendance': attendance})
+    return render(request, 'student/tudent_profile.html', {'student': student, 'courses': courses, 'attendance': attendance})
 
 # Отметка посещаемости с проверкой геолокации
 @login_required

@@ -1,48 +1,83 @@
+<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Система управления студентами</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>{% block title %}Система управления студентами{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 56px;
+        }
+        .navbar {
+            background-color: #343a40;
+        }
+        .navbar-brand {
+            color: #ffffff;
+        }
+        .nav-link {
+            color: #ffffff;
+        }
+        .nav-link:hover {
+            color: #c0c0c0;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'student_management:dashboard' %}">Система управления студентами</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="{% url 'student_management:home' %}">Система управления студентами</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'student_management:dashboard' %}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'student_management:course_list' %}">Курсы</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'student_management:attendance_report' %}">Посещаемость</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'student_management:leaderboard' %}">Лидерборд</a>
+                </li>
+                {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management:dashboard' %}">Главная</a>
+                        <a class="nav-link" href="{% url 'student_management:logout' %}">Выход</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'student_management:login' %}">Вход</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management:attendance_report' %}">Посещаемость</a>
+                        <a class="nav-link" href="{% url 'student_management:register_teacher' %}">Регистрация преподавателя</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management:leaderboard' %}">Рейтинг</a>
+                        <a class="nav-link" href="{% url 'student_management:register_student' %}">Регистрация студента</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management:course_list' %}">Курсы</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management:logout' %}">Выйти</a>
-                    </li>
-                </ul>
-                
-            </div>
+                {% endif %}
+            </ul>
         </div>
     </nav>
-
-    <div class="container my-5">
-        {% block content %}
-        {% endblock %}
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
