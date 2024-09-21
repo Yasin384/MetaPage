@@ -24,4 +24,5 @@ urlpatterns = [
     path('download_users_report/', views.download_users_report, name='download_users_report'),
     path('api/attendance/', views.AttendanceView.as_view(), name='attendance'),
     path('api/points/', views.PointsView.as_view(), name='points'),
+    path('attendance_report/', views.download_attendance_report, name='attendance_report'),
 ]
