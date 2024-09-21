@@ -23,7 +23,7 @@ SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 SECURE_SSL_REDIRECT = False
 ALLOWED_HOSTS = ['web-production-e8c3.up.railway.app', '127.0.0.1', 'localhost']
 
