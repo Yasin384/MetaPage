@@ -1,0 +1,14 @@
+{
+    "build": {
+      "env": {
+        "DJANGO_SECRET_KEY": "your-secret-key",
+        "DJANGO_DEBUG": "False"
+        // добавьте другие переменные окружения, если необходимо
+      },
+      "buildCommand": "pip install -r requirements.txt && python manage.py migrate"
+    },
+    "start": {
+      "cmd": "gunicorn student_management_project.wsgi:application --bind 0.0.0.0:8080"
+    }
+  }
+  
