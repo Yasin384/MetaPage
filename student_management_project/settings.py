@@ -14,6 +14,7 @@ STATICFILES_DIRS = [
      # Убедитесь, что эта директория действительно существует
 ]
 
+  # Замените на ваше имя пользователя
 
 # Логгирование
 LOGGING = {
@@ -167,4 +168,3 @@ CSRF_COOKIE_SECURE = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Тип поля основного ключа по умолчанию
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
