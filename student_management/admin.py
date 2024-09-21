@@ -13,7 +13,9 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('is_teacher', 'course', 'faculty')}),
     )
 
-admin.site.register(User, CustomUserAdmin)
+
+
+admin.site.register(User)
 admin.site.register(Teacher)
 admin.site.register(Student)
 admin.site.register(Course)
