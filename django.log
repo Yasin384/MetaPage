@@ -19848,3 +19848,10 @@ You're accessing the development server over HTTPS, but it only supports HTTP.
 You're accessing the development server over HTTPS, but it only supports HTTP.
 You're accessing the development server over HTTPS, but it only supports HTTP.
 Asynchronous handler adapted for middleware whitenoise.middleware.WhiteNoiseMiddleware.
+(0.000) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None; alias=default
+(0.000) SELECT "django_migrations"."id", "django_migrations"."app", "django_migrations"."name", "django_migrations"."applied" FROM "django_migrations"; args=(); alias=default
+(0.000) SELECT "student_management_user"."id", "student_management_user"."password", "student_management_user"."last_login", "student_management_user"."is_superuser", "student_management_user"."username", "student_management_user"."first_name", "student_management_user"."last_name", "student_management_user"."email", "student_management_user"."is_staff", "student_management_user"."is_active", "student_management_user"."date_joined", "student_management_user"."is_teacher", "student_management_user"."course", "student_management_user"."faculty" FROM "student_management_user" WHERE "student_management_user"."username" = 'yasin' LIMIT 21; args=('yasin',); alias=default
+(0.016) INSERT INTO "student_management_user" ("password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined", "is_teacher", "course", "faculty") VALUES ('pbkdf2_sha256$720000$708ZhPryGKlgS5aodb4TVn$518Ld4z+6QoKrV/bx6tL1zHFN6C+3SJTvuYcet58sMc=', NULL, 1, 'yasin', '', '', 'asinarstanbekov51@gmail.com', 1, 1, '2024-09-21 20:05:18.413579', 0, NULL, NULL) RETURNING "student_management_user"."id"; args=('pbkdf2_sha256$720000$708ZhPryGKlgS5aodb4TVn$518Ld4z+6QoKrV/bx6tL1zHFN6C+3SJTvuYcet58sMc=', None, True, 'yasin', '', '', 'asinarstanbekov51@gmail.com', True, True, '2024-09-21 20:05:18.413579', False, None, None); alias=default
