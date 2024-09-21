@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Профиль Студента: {{ student.user.username }}</h2>
+<h3>Записанные курсы:</h3>
+<ul>
+    {% for course in courses %}
+    <li>{{ course.name }}</li>
+    {% endfor %}
+</ul>
+<h3>Недавняя посещаемость:</h3>
+<ul>
+    {% for attendance in attendance %}
+    <li>{{ attendance.date }}: {{ attendance.attended|yesno:"Посетил, Не посетил" }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

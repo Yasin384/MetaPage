@@ -224,6 +224,27 @@ class PointsView(APIView):
     def get(self, request) -> Response:
         user = request.user
         points = user.points
-        return      HttpResponse({'points': points})
+        return      Response({'points': points})
+@login_required
 def home(request):
     return render(request, 'base.html')
+@login_required
+@user_passes_test(is_teacher)  # Если отчет должен быть доступен только для преподавателей
+def attendance_report_view(request):
+    attendances = Attendance.objects.all().order_by('date')
+
+    # Фильтрация по датам, если указаны
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
+
+    if start_date_str and end_date_str:
+        start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d').date()
+        end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d').date()
+        attendances = attendances.filter(date__range=[start_date, end_date])
+
+    context = {
+        'attendances': attendances,
+        'start_date': start_date_str,
+        'end_date': end_date_str,
+    }
+    return render(request, 'attendance_report.html', context)

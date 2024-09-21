@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Редактировать Курс: {{ course.name }}</h2>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="name" value="{{ course.name }}" required>
+    <textarea name="description" required>{{ course.description }}</textarea>
+    <button type="submit">Сохранить изменения</button>
+</form>
+{% endblock %}

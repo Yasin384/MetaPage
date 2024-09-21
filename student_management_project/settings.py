@@ -4,9 +4,17 @@
 from pathlib import Path
 import os
 import dj_database_url
+import os
+from pathlib import Path
 
-# Paths
+# Определите базовый путь вашего проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Теперь вы можете использовать BASE_DIR
+ # Пример указания каталога со статическими файлами
+]
+# Определите путь к статическим файлам
+
 
 # Static files (CSS, JavaScript, Images)
 
@@ -33,13 +41,17 @@ LOGGING = {
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-dev-secret-key')
 
 # Debugging - Disabled in Production
-DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
+DEBUG = True
+
 
 ALLOWED_HOSTS = [
     'web-production-e8c3.up.railway.app',  # Railway production host
     '127.0.0.1',
     'localhost'
+    "*"
 ]
+
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -52,6 +64,7 @@ INSTALLED_APPS = [
     'student_management',
     'rest_framework',
     'django_extensions',
+    'sslserver',
 ]
 
 MIDDLEWARE = [

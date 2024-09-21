@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Отчет о посещаемости</h2>
+
+<form method="GET" action="{% url 'attendance_report' %}">
+    <label for="start_date">Дата начала:</label>
+    <input type="date" name="start_date" value="{{ start_date }}">
+    
+    <label for="end_date">Дата окончания:</label>
+    <input type="date" name="end_date" value="{{ end_date }}">
+    
+    <button type="submit">Фильтровать</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Пользователь</th>
+            <th>Посетил</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for attendance in attendances %}
+        <tr>
+            <td>{{ attendance.date }}</td>
+            <td>{{ attendance.user.username }}</td>
+            <td>{{ attendance.attended|yesno:"Да,Нет" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

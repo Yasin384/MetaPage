@@ -23,5 +23,7 @@ urlpatterns = [
     path('leaderboard/', views.leaderboard, name='leaderboard'),
     path('attendance/download/report/', views.download_attendance_report, name='download_attendance_report'),
     path('users/download/report/', views.download_users_report, name='download_users_report'),
+    path('attendance/report/', views.attendance_report_view, name='attendance_report'),
+
 ]
 

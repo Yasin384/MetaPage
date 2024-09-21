@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Создать Курс</h2>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Название курса" required>
+    <textarea name="description" placeholder="Описание курса" required></textarea>
+    <button type="submit">Создать курс</button>
+</form>
+{% endblock %}
