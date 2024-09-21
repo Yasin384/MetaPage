@@ -1,64 +1,61 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth import login, logout
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
+from .forms import LoginForm, TeacherSignUpForm, StudentSignUpForm
+from .models import Course, Attendance, Teacher, Student
+from  geopy.distance import geodesic
 from django.core.paginator import Paginator
 from django.utils import timezone
-from geopy.distance import geodesic
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from datetime import datetime
+import datetime
 import csv
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.contrib.auth.decorators import user_passes_test
 
-from .models import User, Attendance, Course, Teacher, Student, Enrollment
-from .forms import TeacherSignUpForm, StudentSignUpForm, LoginForm
+def is_teacher(user):
+    return hasattr(user, 'is_teacher') and user.is_teacher
 
-# Проверка: является ли пользователь преподавателем
-def is_teacher(user: User) -> bool:
-    return user.is_authenticated and user.is_teacher
-
-# Логин
 def login_view(request):
     form = LoginForm(request, data=request.POST or None)
     if form.is_valid():
         login(request, form.get_user())
-        return redirect('dashboard')  # Перенаправление на дашборд после входа
+        return redirect(reverse('dashboard'))  # Redirect to dashboard after login
     return render(request, 'registration/login.html', {'form': form})
 
-# Выход из системы
+# Logout
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('student_management:home')  # Перенаправление на главную страницу
+    return redirect(reverse('home'))  # Redirect to home page after logout
 
-# Главная страница
-def home(request):
-    return render(request, 'base.html')
-
-# Регистрация преподавателя
+# Register teacher
 def register_teacher(request):
     if request.method == 'POST':
         form = TeacherSignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Перенаправление на страницу входа
+            return redirect(reverse('login'))  # Redirect to login page after registration
     else:
         form = TeacherSignUpForm()
     return render(request, 'registration/register_teacher.html', {'form': form})
 
-# Регистрация студента
+# Register student
 def register_student(request):
     if request.method == 'POST':
         form = StudentSignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Перенаправление на страницу входа
+            return redirect(reverse('login'))  # Redirect to login page after registration
     else:
         form = StudentSignUpForm()
     return render(request, 'registration/register_student.html', {'form': form})
 
-# Дашборд
+# Dashboard
 @login_required
 def dashboard(request):
     user = request.user
@@ -66,7 +63,7 @@ def dashboard(request):
     attendance = Attendance.objects.filter(user=user)
     return render(request, 'dashboard.html', {'points': points, 'attendance': attendance})
 
-# Список курсов с поиском
+# Course list with search
 @login_required
 def course_list(request):
     query = request.GET.get('q')
@@ -78,70 +75,70 @@ def course_list(request):
         courses = Course.objects.all()
     return render(request, 'course_list.html', {'courses': courses})
 
-# Детали курса
+# Course detail
 @login_required
 def course_detail(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     is_enrolled = request.user in course.students.all()
     return render(request, 'course_detail.html', {'course': course, 'is_enrolled': is_enrolled})
 
-# Запись на курс
+# Enroll in course
 @login_required
 def enroll_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     if request.user not in course.students.all():
         course.students.add(request.user)
-    return redirect('course_detail', course_id=course_id)
+    return redirect(reverse('course_detail', kwargs={'course_id': course_id}))
 
-# Отписка от курса
+# Unenroll from course
 @login_required
 def unenroll_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     if request.user in course.students.all():
         course.students.remove(request.user)
-    return redirect('course_detail', course_id=course_id)
+    return redirect(reverse('course_detail', kwargs={'course_id': course_id}))
 
-# Профиль преподавателя
+# Teacher profile
 @login_required
 def teacher_profile(request):
     teacher = Teacher.objects.get(user=request.user)
     courses = teacher.user.taught_courses.all()
     return render(request, 'teachers/teacher_profile.html', {'teacher': teacher, 'courses': courses})
 
-# Создание курса
+# Create course
 @login_required
 def create_course(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
         course = Course.objects.create(name=name, description=description, teacher=request.user)
-        return redirect('teachers:teacher_profile')
+        return redirect(reverse('teacher_profile'))
     return render(request, 'teachers/create_course.html')
 
-# Редактирование курса
+# Edit course
 @login_required
 def edit_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     if course.teacher != request.user:
-        return redirect('teachers:teacher_profile')
+        return redirect(reverse('teacher_profile'))
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
         course.name = name
         course.description = description
         course.save()
-        return redirect('teachers:course_detail', course_id=course_id)
+        return redirect(reverse('course_detail', kwargs={'course_id': course_id}))
     return render(request, 'teachers/edit_course.html', {'course': course})
 
-# Профиль студента
+# Student profile
 @login_required
 def student_profile(request):
     student = Student.objects.get(user=request.user)
     courses = student.user.enrolled_courses.all()
     attendance = Attendance.objects.filter(user=request.user).order_by('-date')[:5]
-    return render(request, 'student/tudent_profile.html', {'student': student, 'courses': courses, 'attendance': attendance})
+    return render(request, 'student/student_profile.html', {'student': student, 'courses': courses, 'attendance': attendance})
 
-# Отметка посещаемости с проверкой геолокации
+# Check attendance
 @login_required
 def check_attendance(request):
     user = request.user
@@ -166,16 +163,16 @@ def check_attendance(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'You are not in the college area'})
 
-# Лидерборд
+# Leaderboard
 @login_required
 def leaderboard(request):
     users = User.objects.order_by('-points')
-    paginator = Paginator(users, 20)  # 20 пользователей на страницу
+    paginator = Paginator(users, 20)  # 20 users per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'leaderboard.html', {'page_obj': page_obj})
 
-# Скачивание отчета по посещаемости
+# Download attendance report
 @user_passes_test(is_teacher)
 def download_attendance_report(request) -> HttpResponse:
     response = HttpResponse(content_type='text/csv')
@@ -199,7 +196,7 @@ def download_attendance_report(request) -> HttpResponse:
 
     return response
 
-# Скачивание отчета по пользователям
+# Download users report
 @user_passes_test(is_teacher)
 def download_users_report(request) -> HttpResponse:
     response = HttpResponse(content_type='text/csv')
@@ -214,7 +211,7 @@ def download_users_report(request) -> HttpResponse:
 
     return response
 
-# Просмотр посещаемости (API)
+# View attendance (API)
 class AttendanceView(APIView):
     def get(self, request) -> Response:
         user = request.user
@@ -222,9 +219,11 @@ class AttendanceView(APIView):
         data = [{'date': item.date, 'attended': item.attended} for item in attendance]
         return Response(data)
 
-# Просмотр очков пользователя (API)
+# View points (API)
 class PointsView(APIView):
     def get(self, request) -> Response:
         user = request.user
         points = user.points
-        return Response({'points': points})
+        return      HttpResponse({'points': points})
+def home(request):
+    return render(request, 'base.html')
