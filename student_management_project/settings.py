@@ -9,9 +9,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'  # Make sure this is correctly defined
-STATICFILES_DIRS = [BASE_DIR / "static"]  # Directory for static files in development
-STATIC_ROOT = BASE_DIR / "staticfiles"  # Directory for collected static files
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
