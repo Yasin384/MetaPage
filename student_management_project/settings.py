@@ -9,11 +9,10 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Это для collectstatic
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # Дополнительные директории для статических файлов (если есть)
+     # Убедитесь, что эта директория действительно существует
 ]
-
-STATIC_ROOT = BASE_DIR / "staticfiles"  # Для команды collectstatic
 
 
 # Логгирование
