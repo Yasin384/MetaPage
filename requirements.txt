@@ -7,6 +7,7 @@ click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
 colorama==0.4.6
+dj-database-url==2.2.0
 Django==5.0.9
 django-celery-results==2.5.1
 django-extensions==3.2.3
@@ -18,11 +19,13 @@ gunicorn==20.1.0
 kombu==5.4.2
 openpyxl==3.1.5
 prompt_toolkit==3.0.47
+psycopg2==2.9.9
 python-dateutil==2.9.0.post0
 python-decouple==3.8
 redis==5.0.8
 six==1.16.0
 sqlparse==0.5.1
+typing_extensions==4.12.2
 tzdata==2024.1
 vine==5.1.0
 wcwidth==0.2.13
