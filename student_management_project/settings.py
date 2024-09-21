@@ -4,20 +4,11 @@
 from pathlib import Path
 import os
 import dj_database_url
-import os
-from pathlib import Path
 
 # Определите базовый путь вашего проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Теперь вы можете использовать BASE_DIR
- # Пример указания каталога со статическими файлами
-]
-# Определите путь к статическим файлам
-
-
-# Static files (CSS, JavaScript, Images)
-
+# Логгирование
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -37,23 +28,21 @@ LOGGING = {
     },
 }
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: храните секретный ключ в производственной среде в секрете!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-dev-secret-key')
 
-# Debugging - Disabled in Production
+# Debugging - отключено в производственной среде
 DEBUG = True
 
-
+# Разрешенные хосты
 ALLOWED_HOSTS = [
     'web-production-e8c3.up.railway.app',  # Railway production host
     '127.0.0.1',
-    'localhost'
-    "*"
+    'localhost',
+    "*",
 ]
 
-
-
-# Application definition
+# Определение приложения
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,7 +58,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # To handle static files in production
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Для обработки статических файлов в производственной среде
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,7 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Add Whitenoise static file handling
+# Хранение статических файлов
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'student_management_project.urls'
@@ -101,14 +90,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'student_management_project.wsgi.application'
 
-# Database setup
+# Настройка базы данных
 if 'DATABASE_URL' in os.environ:
-    # For production (PostgreSQL on Railway)
+    # Для производства (PostgreSQL на Railway)
     DATABASES = {
         'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
 else:
-    # Default to SQLite for development
+    # По умолчанию SQLite для разработки
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -116,26 +105,26 @@ else:
         }
     }
 
-# Celery Configuration
+# Настройки Celery
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'amqp://guest:guest@localhost:5672//')
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_BEAT_SCHEDULE = {
     'check-attendance': {
         'task': 'student_management.tasks.check_attendance',
-        'schedule': '*/1 * * * *',  # Every minute
+        'schedule': '*/1 * * * *',  # Каждую минуту
     },
 }
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
-# Authentication Settings
+# Настройки аутентификации
 AUTH_USER_MODEL = 'student_management.User'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-LOGIN_URL = '/login/'  # Adjust this based on your login URL
+LOGIN_URL = '/login/'  # Настройте это в зависимости от вашего URL для входа
 
-# Password validation
+# Проверка паролей
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -151,24 +140,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
+# Интернационализация
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Security and CSRF Settings
+# Настройки безопасности и CSRF
 CSRF_TRUSTED_ORIGINS = [
     'https://web-production-e8c3.up.railway.app'
 ]
 
-# Security settings (configure for production later)
+# Настройки безопасности (настраивайте для производства позже)
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-# settings.py
+# Куда отправляется переадресация SSL
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Default primary key field type
+# Тип поля основного ключа по умолчанию
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
